@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.authnative"
+        applicationId "com.mobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -207,8 +207,6 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-    compile project(':react-native-vector-icons')
-    implementation project(':react-native-linear-gradient')
 }
 
 // Run this once to be able to run the application with BUCK
@@ -219,4 +217,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
