@@ -40,7 +40,7 @@ const Login = (props) => {
       };
       try {
         const res = await Axios.post(
-          'https://cobaauthnative.herokuapp.com/api/auth/login',
+          'https://e-chick-backend.herokuapp.com/api/auth/login',
           body,
         );
         await AsyncStorage.setItem('token', res.data.access_token);

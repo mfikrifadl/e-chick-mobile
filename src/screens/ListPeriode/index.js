@@ -7,21 +7,53 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const ListPeriode = () => {
+const ListPeriode = ({navigation}) => {
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Text>List Periode</Text>
+    <View style={styles.container}>
+      <Text>List Periode</Text>
+      <Text>List Periode</Text>
+      <Text>List Periode</Text>
+      <View style={styles.buttonButtom}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('Form Periode')}>
+          <FontAwesome name="plus" color="#fff" size={30} />
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    flex: 1,
+  },
+  buttonButtom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 36,
+  },
+  addButton: {
+    backgroundColor: '#009387',
+    width: 70,
+    height: 70,
+    position: 'absolute',
+    bottom: -20,
+    right: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 100,
   },
 });
 
