@@ -21,7 +21,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Card} from '../../component';
 
 const ListPeriode = ({navigation}) => {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [dataTable, setDataTable] = useState('');
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -38,19 +38,19 @@ const ListPeriode = ({navigation}) => {
       headers: {Authorization: `Bearer ${token}`},
     };
     try {
+      setIsLoading(true);
       const res = await Axios.get(
         'https://e-chick-backend.herokuapp.com/api/periode?filter=',
         config,
       );
       setDataTable(res.data.data);
-      setIsSuccess('success');
+      setIsLoading(false);
     } catch (error) {
-      setIsSuccess('error');
       alert('gagal');
     }
   };
 
-  if (dataTable.length === 0) {
+  if (isLoading === true) {
     return (
       <View style={styles.loader}>
         <ActivityIndicator size="large" color="#009387" />

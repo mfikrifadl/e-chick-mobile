@@ -17,6 +17,7 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Axios from 'axios';
 import * as Animatable from 'react-native-animatable';
@@ -29,23 +30,28 @@ const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [islogin, setIslogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {colors} = useTheme();
 
   const handleClickSubmit = async () => {
+    setIslogin('');
     if (email && password) {
       const body = {
         email,
         password,
       };
       try {
+        setIsLoading(true);
         const res = await Axios.post(
           'https://e-chick-backend.herokuapp.com/api/auth/login',
           body,
         );
         await AsyncStorage.setItem('token', res.data.access_token);
+        setIsLoading(false);
         setIslogin('success');
       } catch (error) {
+        setIsLoading(false);
         setIslogin('error');
       }
       const token = await AsyncStorage.getItem('token');
@@ -56,6 +62,14 @@ const Login = (props) => {
     islogin == 'success' && props.navigation.navigate('MainApp');
     islogin == 'error' && alert('Wrong Password or Email');
   }, [islogin]);
+
+  if (isLoading === true) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#009387" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -217,6 +231,11 @@ const styles = StyleSheet.create({
   },
   textSign: {
     fontSize: 18,
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

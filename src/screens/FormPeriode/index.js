@@ -17,6 +17,7 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Axios from 'axios';
 import * as Animatable from 'react-native-animatable';
@@ -28,10 +29,12 @@ const FormPeriode = (props) => {
   const [total_doc, setDoc] = useState('');
   const [no_do, setNoDo] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {colors} = useTheme();
 
   const handleClickSubmit = async () => {
+    setIsSuccess('');
     const token = await AsyncStorage.getItem('token');
     const config = {
       headers: {Authorization: `Bearer ${token}`},
@@ -42,11 +45,13 @@ const FormPeriode = (props) => {
         no_do,
       };
       try {
+        setIsLoading(true);
         const res = await Axios.post(
           'https://e-chick-backend.herokuapp.com/api/periode',
           body,
           config,
         );
+        setIsLoading(false);
         setIsSuccess('success');
       } catch (error) {
         setIsSuccess('error');
@@ -58,6 +63,14 @@ const FormPeriode = (props) => {
     isSuccess == 'success' && props.navigation.navigate('List Periode');
     isSuccess == 'error' && alert('Menambahkan Periode Gagal');
   }, [isSuccess]);
+
+  if (isLoading === true) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#009387" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -217,6 +230,11 @@ const styles = StyleSheet.create({
   },
   textSign: {
     fontSize: 18,
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
