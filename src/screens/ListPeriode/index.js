@@ -24,8 +24,13 @@ const ListPeriode = ({navigation}) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [dataTable, setDataTable] = useState('');
   useEffect(() => {
-    getData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   const getData = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -34,7 +39,7 @@ const ListPeriode = ({navigation}) => {
     };
     try {
       const res = await Axios.get(
-        'https://e-chick-backend.herokuapp.com/api/periode',
+        'https://e-chick-backend.herokuapp.com/api/periode?filter=',
         config,
       );
       setDataTable(res.data.data);
