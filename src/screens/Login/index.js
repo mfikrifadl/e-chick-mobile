@@ -53,7 +53,7 @@ const Login = (props) => {
   };
 
   useEffect(() => {
-    islogin == 'success' && props.navigation.navigate('Home');
+    islogin == 'success' && props.navigation.navigate('MainApp');
     islogin == 'error' && alert('Wrong Password or Email');
   }, [islogin]);
 
