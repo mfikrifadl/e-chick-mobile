@@ -24,12 +24,12 @@ const Splash = (props) => {
 
   const checkToken = async () => {
     const token = await AsyncStorage.getItem('token');
-    props.navigation.navigate(token ? 'Home' : 'Login');
+    props.navigation.replace(token ? 'MainApp' : 'Login');
   };
   useEffect(() => {
     setTimeout(() => {
       checkToken();
-    }, 1000);
+    }, 3000);
   }, []);
 
   return (
