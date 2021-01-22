@@ -2,7 +2,17 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Login, Home, Splash, ListPeriode, Akun, FormPeriode} from '../screens';
+import {
+  Login,
+  Home,
+  Splash,
+  ListPeriode,
+  Akun,
+  FormPeriode,
+  MenuPeriode,
+  ListHarian,
+  FormHarian,
+} from '../screens';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,6 +47,9 @@ const AppNavigation = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen name={'Form Periode'} component={FormPeriode} />
+        <Stack.Screen name={'Menu Periode'} component={MenuPeriode} />
+        <Stack.Screen name={'List Harian'} component={ListHarian} />
+        <Stack.Screen name={'Form Harian'} component={FormHarian} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,22 +1,25 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
-const Card = (props) => {
+const CardPeriode = ({item}) => {
+  const navigation = useNavigation();
+  const handleClickSubmit = async () => {
+    await AsyncStorage.setItem('idPeriode', JSON.stringify(item.id));
+    navigation.navigate('Menu Periode');
+  };
   return (
     <View style={styles.cardContainer}>
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity style={styles.card} onPress={handleClickSubmit}>
         <Text style={{color: '#fff'}}>
-          Periode {props.item.created_at.substr(0, 10)} ->{' '}
-          {props.item.end_date === null
-            ? 'now'
-            : props.item.end_date.substr(0, 10)}
+          Periode {item.created_at.substr(0, 10)} ->{' '}
+          {item.end_date === null ? 'now' : item.end_date.substr(0, 10)}
         </Text>
         <View style={styles.cardText}>
-          <Text style={{color: '#fff'}}>
-            Total Ayam : {props.item.total_doc}
-          </Text>
+          <Text style={{color: '#fff'}}>Total Ayam : {item.total_doc}</Text>
           <Text style={{alignSelf: 'flex-end', color: '#fff'}}>
-            No DO : {props.item.no_do}
+            No DO : {item.no_do}
           </Text>
         </View>
       </TouchableOpacity>
@@ -24,7 +27,7 @@ const Card = (props) => {
   );
 };
 
-export default Card;
+export default CardPeriode;
 
 const styles = StyleSheet.create({
   card: {

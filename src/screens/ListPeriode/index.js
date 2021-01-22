@@ -18,13 +18,14 @@ import {
   Text,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Card} from '../../component';
+import {CardPeriode} from '../../component';
 
 const ListPeriode = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataTable, setDataTable] = useState('');
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      await AsyncStorage.setItem('idPeriode', '');
       getData();
     });
 
@@ -65,7 +66,7 @@ const ListPeriode = ({navigation}) => {
         style={styles.cardContainer}
         data={dataTable}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => <Card item={item} />}
+        renderItem={({item}) => <CardPeriode item={item} />}
       />
 
       <View style={styles.buttonButtom}>
