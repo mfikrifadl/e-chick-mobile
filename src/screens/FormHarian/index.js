@@ -18,6 +18,7 @@ import {
   StatusBar,
   Alert,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import Axios from 'axios';
 import * as Animatable from 'react-native-animatable';
@@ -26,8 +27,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from '@react-navigation/native';
 
 const FormHarian = (props) => {
-  const [total_doc, setDoc] = useState('');
-  const [no_do, setNoDo] = useState('');
+  const [umur, setUmur] = useState('');
+  const [pakan_masuk, setPakanMasuk] = useState('');
+  const [pakan_pakai, setPakanPakai] = useState('');
+  const [jagung_pakai, setJagungPakai] = useState('');
+  const [transfer_pakan, setTransferPakan] = useState('');
+  const [mati, setMati] = useState('');
+  const [afkir, setAfkir] = useState('');
+  const [timbang, setTimbang] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,18 +43,36 @@ const FormHarian = (props) => {
   const handleClickSubmit = async () => {
     setIsSuccess('');
     const token = await AsyncStorage.getItem('token');
+    const idPeriode = await AsyncStorage.getItem('idPeriode');
     const config = {
       headers: {Authorization: `Bearer ${token}`},
     };
-    if (total_doc && no_do) {
+    if (
+      umur &&
+      pakan_masuk &&
+      pakan_pakai &&
+      jagung_pakai &&
+      transfer_pakan &&
+      mati &&
+      afkir &&
+      timbang
+    ) {
       const body = {
-        total_doc,
-        no_do,
+        umur,
+        pakan_masuk,
+        pakan_pakai,
+        jagung_pakai,
+        transfer_pakan,
+        mati,
+        afkir,
+        timbang,
       };
       try {
         setIsLoading(true);
         const res = await Axios.post(
-          'https://e-chick-backend.herokuapp.com/api/periode',
+          'https://e-chick-backend.herokuapp.com/api/periode/' +
+            idPeriode +
+            '/harian',
           body,
           config,
         );
@@ -60,8 +85,8 @@ const FormHarian = (props) => {
   };
 
   useEffect(() => {
-    isSuccess == 'success' && props.navigation.navigate('List Periode');
-    isSuccess == 'error' && alert('Menambahkan Periode Gagal');
+    isSuccess == 'success' && props.navigation.navigate('List Harian');
+    isSuccess == 'error' && alert('Menambahkan Laporan Harian Gagal');
   }, [isSuccess]);
 
   if (isLoading === true) {
@@ -76,92 +101,280 @@ const FormHarian = (props) => {
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
-        <Text style={styles.text_header}>Form untuk menambah periode baru</Text>
+        <Text style={styles.text_header}>Form untuk laporan harian</Text>
       </View>
-      <Animatable.View
-        animation="fadeInUpBig"
-        style={[
-          styles.footer,
-          {
-            backgroundColor: colors.background,
-          },
-        ]}>
-        <Text
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Animatable.View
+          animation="fadeInUpBig"
           style={[
-            styles.text_footer,
+            styles.footer,
             {
-              color: colors.text,
+              backgroundColor: colors.background,
             },
           ]}>
-          Total DOC
-        </Text>
-        <View style={styles.action}>
-          <FontAwesome name="optin-monster" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Total DOC Masuk"
-            value={total_doc}
-            placeholderTextColor="#666666"
+          <Text
             style={[
-              styles.textInput,
+              styles.text_footer,
               {
                 color: colors.text,
               },
-            ]}
-            autoCapitalize="none"
-            keyboardType="numeric"
-            onChangeText={(text) => setDoc(text)}
-          />
-        </View>
+            ]}>
+            Umur
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome name="optin-monster" color={colors.text} size={20} />
+            <TextInput
+              placeholder="Umur Ayam"
+              value={umur}
+              placeholderTextColor="#666666"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              keyboardType="numeric"
+              onChangeText={(text) => setUmur(text)}
+            />
+          </View>
 
-        <Text
-          style={[
-            styles.text_footer,
-            {
-              color: colors.text,
-              marginTop: 35,
-            },
-          ]}>
-          No. DO
-        </Text>
-        <View style={styles.action}>
-          <FontAwesome
-            name="arrow-circle-o-right"
-            color={colors.text}
-            size={20}
-          />
-          <TextInput
-            value={no_do}
-            placeholder="Masukan No. DO"
-            placeholderTextColor="#666666"
-            keyboardType="numeric"
+          <Text
             style={[
-              styles.textInput,
+              styles.text_footer,
               {
                 color: colors.text,
+                marginTop: 35,
               },
-            ]}
-            autoCapitalize="none"
-            onChangeText={(text) => setNoDo(text)}
-          />
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity style={styles.signIn} onPress={handleClickSubmit}>
-            <LinearGradient
-              colors={['#08d4c4', '#01ab9d']}
-              style={styles.signIn}>
-              <Text
-                style={[
-                  styles.textSign,
-                  {
-                    color: '#fff',
-                  },
-                ]}>
-                Tambah
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View>
+            ]}>
+            Pakan Masuk
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              name="arrow-circle-o-right"
+              color={colors.text}
+              size={20}
+            />
+            <TextInput
+              value={pakan_masuk}
+              placeholder="Masukan Pakan Masuk"
+              placeholderTextColor="#666666"
+              keyboardType="numeric"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(text) => setPakanMasuk(text)}
+            />
+          </View>
+          <Text
+            style={[
+              styles.text_footer,
+              {
+                color: colors.text,
+                marginTop: 35,
+              },
+            ]}>
+            Pakan Pakai
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              name="arrow-circle-o-right"
+              color={colors.text}
+              size={20}
+            />
+            <TextInput
+              value={pakan_pakai}
+              placeholder="Masukan Pakan Yang Dipakai"
+              placeholderTextColor="#666666"
+              keyboardType="numeric"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(text) => setPakanPakai(text)}
+            />
+          </View>
+          <Text
+            style={[
+              styles.text_footer,
+              {
+                color: colors.text,
+                marginTop: 35,
+              },
+            ]}>
+            Jagung Pakai
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              name="arrow-circle-o-right"
+              color={colors.text}
+              size={20}
+            />
+            <TextInput
+              value={jagung_pakai}
+              placeholder="Masukan jagung yang dipakai"
+              placeholderTextColor="#666666"
+              keyboardType="numeric"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(text) => setJagungPakai(text)}
+            />
+          </View>
+          <Text
+            style={[
+              styles.text_footer,
+              {
+                color: colors.text,
+                marginTop: 35,
+              },
+            ]}>
+            Transfer Pakan
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              name="arrow-circle-o-right"
+              color={colors.text}
+              size={20}
+            />
+            <TextInput
+              value={transfer_pakan}
+              placeholder="Masukan pakan yang ditransfer"
+              placeholderTextColor="#666666"
+              keyboardType="numeric"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(text) => setTransferPakan(text)}
+            />
+          </View>
+          <Text
+            style={[
+              styles.text_footer,
+              {
+                color: colors.text,
+                marginTop: 35,
+              },
+            ]}>
+            Mati
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              name="arrow-circle-o-right"
+              color={colors.text}
+              size={20}
+            />
+            <TextInput
+              value={mati}
+              placeholder="Masukan ayam yang mati"
+              placeholderTextColor="#666666"
+              keyboardType="numeric"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(text) => setMati(text)}
+            />
+          </View>
+          <Text
+            style={[
+              styles.text_footer,
+              {
+                color: colors.text,
+                marginTop: 35,
+              },
+            ]}>
+            Afkir
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              name="arrow-circle-o-right"
+              color={colors.text}
+              size={20}
+            />
+            <TextInput
+              value={afkir}
+              placeholder="Masukan ayam afkir"
+              placeholderTextColor="#666666"
+              keyboardType="numeric"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(text) => setAfkir(text)}
+            />
+          </View>
+          <Text
+            style={[
+              styles.text_footer,
+              {
+                color: colors.text,
+                marginTop: 35,
+              },
+            ]}>
+            Berat
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              name="arrow-circle-o-right"
+              color={colors.text}
+              size={20}
+            />
+            <TextInput
+              value={timbang}
+              placeholder="Masukan berat rata rata ayam"
+              placeholderTextColor="#666666"
+              keyboardType="numeric"
+              style={[
+                styles.textInput,
+                {
+                  color: colors.text,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(text) => setTimbang(text)}
+            />
+          </View>
+          <View style={styles.button}>
+            <TouchableOpacity style={styles.signIn} onPress={handleClickSubmit}>
+              <LinearGradient
+                colors={['#08d4c4', '#01ab9d']}
+                style={styles.signIn}>
+                <Text
+                  style={[
+                    styles.textSign,
+                    {
+                      color: '#fff',
+                    },
+                  ]}>
+                  Tambah
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </Animatable.View>
+      </ScrollView>
     </View>
   );
 };
