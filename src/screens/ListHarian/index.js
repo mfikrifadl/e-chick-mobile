@@ -6,22 +6,75 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Axios from 'axios';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {CardHarian} from '../../component';
 
 const ListHarian = ({navigation}) => {
+  const [dataTable, setDataTable] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      await AsyncStorage.setItem('idHarian', '');
+      getData();
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+  const getData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const idPeriode = await AsyncStorage.getItem('idPeriode');
+    const config = {
+      headers: {Authorization: `Bearer ${token}`},
+    };
+    try {
+      setIsLoading(true);
+      const res = await Axios.get(
+        'https://e-chick-backend.herokuapp.com/api/periode/' +
+          idPeriode +
+          '/harian',
+        config,
+      );
+      setDataTable(res.data.data);
+      await AsyncStorage.setItem(
+        'jumlahHarian',
+        JSON.stringify(res.data.data.length + 1),
+      );
+      setIsLoading(false);
+    } catch (error) {
+      alert('gagal');
+    }
+  };
+
+  if (isLoading === true) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#009387" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text>List Harian</Text>
-      </View>
+      <FlatList
+        style={styles.cardContainer}
+        data={dataTable}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item}) => <CardHarian item={item} {...this.props} />}
+      />
       <View style={styles.buttonButtom}>
         <TouchableOpacity
           style={styles.addButton}
@@ -55,6 +108,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     borderRadius: 100,
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

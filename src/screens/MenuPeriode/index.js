@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     fontSize: 20,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
 });
 

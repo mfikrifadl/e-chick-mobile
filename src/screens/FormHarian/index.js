@@ -7,7 +7,7 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Component} from 'react';
 import {
   View,
   Text,
@@ -34,11 +34,57 @@ const FormHarian = (props) => {
   const [transfer_pakan, setTransferPakan] = useState('');
   const [mati, setMati] = useState('');
   const [afkir, setAfkir] = useState('');
+  const [id, setId] = useState('');
+  const [standart, setStandart] = useState('');
   const [timbang, setTimbang] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const {colors} = useTheme();
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', async () => {
+      setId(props.route.params.id);
+      const jumlahHarian = await AsyncStorage.getItem('jumlahHarian');
+      if (id !== null) {
+        setIsEdit(true);
+        getData();
+      } else {
+        setUmur(jumlahHarian);
+      }
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [props.navigation]);
+
+  const getData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {Authorization: `Bearer ${token}`},
+    };
+    try {
+      setIsLoading(true);
+      const res = await Axios.get(
+        'https://e-chick-backend.herokuapp.com/api/harian/' +
+          props.route.params.id,
+        config,
+      );
+      setUmur(JSON.stringify(res.data.data.umur));
+      setPakanMasuk(JSON.stringify(res.data.data.pakan_masuk));
+      setPakanPakai(JSON.stringify(res.data.data.pakan_pakai));
+      setJagungPakai(JSON.stringify(res.data.data.jagung_pakai));
+      setTransferPakan(JSON.stringify(res.data.data.transfer_pakan));
+      setMati(JSON.stringify(res.data.data.mati));
+      setAfkir(JSON.stringify(res.data.data.afkir));
+      setStandart(JSON.stringify(res.data.data.standart));
+      setTimbang(JSON.stringify(res.data.data.timbang));
+      setIsLoading(false);
+    } catch (error) {
+      alert('gagal');
+      console.log(error);
+    }
+  };
 
   const handleClickSubmit = async () => {
     setIsSuccess('');
@@ -69,17 +115,31 @@ const FormHarian = (props) => {
       };
       try {
         setIsLoading(true);
-        const res = await Axios.post(
-          'https://e-chick-backend.herokuapp.com/api/periode/' +
-            idPeriode +
-            '/harian',
-          body,
-          config,
-        );
+        if (isEdit == true) {
+          const res = await Axios.put(
+            'https://e-chick-backend.herokuapp.com/api/harian/' +
+              props.route.params.id +
+              '/edit',
+            body,
+            config,
+          );
+          console.log(res.data);
+        } else {
+          const res = await Axios.post(
+            'https://e-chick-backend.herokuapp.com/api/periode/' +
+              idPeriode +
+              '/harian',
+            body,
+            config,
+          );
+        }
+
         setIsLoading(false);
         setIsSuccess('success');
       } catch (error) {
         setIsSuccess('error');
+        setIsLoading(false);
+        console.log(error);
       }
     }
   };
@@ -93,6 +153,324 @@ const FormHarian = (props) => {
     return (
       <View style={styles.loader}>
         <ActivityIndicator size="large" color="#009387" />
+      </View>
+    );
+  }
+
+  if (isEdit === true) {
+    return (
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#009387" barStyle="light-content" />
+        <View style={styles.header}>
+          <Text style={styles.text_header}>Form untuk laporan harian</Text>
+        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Animatable.View
+            animation="fadeInUpBig"
+            style={[
+              styles.footer,
+              {
+                backgroundColor: colors.background,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                },
+              ]}>
+              Umur
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome name="optin-monster" color={colors.text} size={20} />
+              <TextInput
+                editable={false}
+                placeholder="Umur Ayam"
+                value={umur}
+                placeholderTextColor="#666666"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                keyboardType="numeric"
+                onChangeText={(text) => setUmur(text)}
+              />
+            </View>
+
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Pakan Masuk
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={pakan_masuk}
+                placeholder="Masukan Pakan Masuk"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={(text) => setPakanMasuk(text)}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Standart Pakan Pakai
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={standart}
+                placeholder="Masukan Pakan Yang Dipakai"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                editable={false}
+                onChangeText={(text) => setStandart(text)}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Pakan Pakai
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={pakan_pakai}
+                placeholder="Masukan Pakan Yang Dipakai"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={(text) => setPakanPakai(text)}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Jagung Pakai
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={jagung_pakai}
+                placeholder="Masukan jagung yang dipakai"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={(text) => setJagungPakai(text)}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Transfer Pakan
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={transfer_pakan}
+                placeholder="Masukan pakan yang ditransfer"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={(text) => setTransferPakan(text)}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Mati
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={mati}
+                placeholder="Masukan ayam yang mati"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={(text) => setMati(text)}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Afkir
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={afkir}
+                placeholder="Masukan ayam afkir"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={(text) => setAfkir(text)}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  color: colors.text,
+                  marginTop: 35,
+                },
+              ]}>
+              Berat
+            </Text>
+            <View style={styles.action}>
+              <FontAwesome
+                name="arrow-circle-o-right"
+                color={colors.text}
+                size={20}
+              />
+              <TextInput
+                value={timbang}
+                placeholder="Masukan berat rata rata ayam"
+                placeholderTextColor="#666666"
+                keyboardType="numeric"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
+                autoCapitalize="none"
+                onChangeText={(text) => setTimbang(text)}
+              />
+            </View>
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.signIn}
+                onPress={handleClickSubmit}>
+                <LinearGradient
+                  colors={['#08d4c4', '#01ab9d']}
+                  style={styles.signIn}>
+                  <Text
+                    style={[
+                      styles.textSign,
+                      {
+                        color: '#fff',
+                      },
+                    ]}>
+                    {isEdit == false ? 'Tambah' : 'Edit'}
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
+        </ScrollView>
       </View>
     );
   }
@@ -124,6 +502,7 @@ const FormHarian = (props) => {
           <View style={styles.action}>
             <FontAwesome name="optin-monster" color={colors.text} size={20} />
             <TextInput
+              editable={false}
               placeholder="Umur Ayam"
               value={umur}
               placeholderTextColor="#666666"
@@ -368,7 +747,7 @@ const FormHarian = (props) => {
                       color: '#fff',
                     },
                   ]}>
-                  Tambah
+                  {isEdit == false ? 'Tambah' : 'Edit'}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>

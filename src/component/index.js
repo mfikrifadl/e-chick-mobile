@@ -1,2 +1,3 @@
 import CardPeriode from './CardPeriode';
-export {CardPeriode};
+import CardHarian from './CardHarian';
+export {CardPeriode, CardHarian};
