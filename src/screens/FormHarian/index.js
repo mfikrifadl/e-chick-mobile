@@ -34,7 +34,6 @@ const FormHarian = (props) => {
   const [transfer_pakan, setTransferPakan] = useState('');
   const [mati, setMati] = useState('');
   const [afkir, setAfkir] = useState('');
-  const [id, setId] = useState('');
   const [standart, setStandart] = useState('');
   const [timbang, setTimbang] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -45,9 +44,9 @@ const FormHarian = (props) => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', async () => {
-      setId(props.route.params.id);
       const jumlahHarian = await AsyncStorage.getItem('jumlahHarian');
-      if (id !== null) {
+      const idHarian = await AsyncStorage.getItem('idHarian');
+      if (idHarian !== null) {
         setIsEdit(true);
         getData();
       } else {
@@ -90,6 +89,7 @@ const FormHarian = (props) => {
     setIsSuccess('');
     const token = await AsyncStorage.getItem('token');
     const idPeriode = await AsyncStorage.getItem('idPeriode');
+    const idHarian = await AsyncStorage.getItem('idHarian');
     const config = {
       headers: {Authorization: `Bearer ${token}`},
     };
@@ -118,7 +118,7 @@ const FormHarian = (props) => {
         if (isEdit == true) {
           const res = await Axios.put(
             'https://e-chick-backend.herokuapp.com/api/harian/' +
-              props.route.params.id +
+              idHarian +
               '/edit',
             body,
             config,
@@ -447,7 +447,7 @@ const FormHarian = (props) => {
                   },
                 ]}
                 autoCapitalize="none"
-                onChangeText={(text) => setTimbang(text)}
+                onChangeText={(text) => setTimbang(parseFloat(text))}
               />
             </View>
             <View style={styles.button}>

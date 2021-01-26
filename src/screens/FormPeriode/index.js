@@ -30,12 +30,47 @@ const FormPeriode = (props) => {
   const [no_do, setNoDo] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const {colors} = useTheme();
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', async () => {
+      const idPeriode = await AsyncStorage.getItem('idPeriode');
+      if (idPeriode !== null) {
+        setIsEdit(true);
+        getData();
+      }
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [props.navigation]);
+
+  const getData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const idPeriode = await AsyncStorage.getItem('idPeriode');
+    const config = {
+      headers: {Authorization: `Bearer ${token}`},
+    };
+    try {
+      setIsLoading(true);
+      const res = await Axios.get(
+        'https://e-chick-backend.herokuapp.com/api/periode/' + idPeriode,
+        config,
+      );
+      setDoc(JSON.stringify(res.data.data.total_doc));
+      setNoDo(JSON.stringify(res.data.data.no_do));
+      setIsLoading(false);
+    } catch (error) {
+      alert('gagal');
+      console.log(error);
+    }
+  };
 
   const handleClickSubmit = async () => {
     setIsSuccess('');
     const token = await AsyncStorage.getItem('token');
+    const idPeriode = await AsyncStorage.getItem('idPeriode');
     const config = {
       headers: {Authorization: `Bearer ${token}`},
     };
@@ -46,14 +81,24 @@ const FormPeriode = (props) => {
       };
       try {
         setIsLoading(true);
-        const res = await Axios.post(
-          'https://e-chick-backend.herokuapp.com/api/periode',
-          body,
-          config,
-        );
+        if (isEdit == true) {
+          const res = await Axios.put(
+            'https://e-chick-backend.herokuapp.com/api/periode/edit/' +
+              idPeriode,
+            body,
+            config,
+          );
+        } else {
+          const res = await Axios.post(
+            'https://e-chick-backend.herokuapp.com/api/periode',
+            body,
+            config,
+          );
+        }
         setIsLoading(false);
         setIsSuccess('success');
       } catch (error) {
+        console.log(error);
         setIsSuccess('error');
       }
     }
@@ -141,7 +186,7 @@ const FormPeriode = (props) => {
               },
             ]}
             autoCapitalize="none"
-            onChangeText={(text) => setNoDo(text)}
+            onChangeText={(text) => setNoDo(parseFloat(text))}
           />
         </View>
         <View style={styles.button}>

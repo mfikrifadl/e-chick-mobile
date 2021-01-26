@@ -24,6 +24,11 @@ const MenuPeriode = ({navigation}) => {
           onPress={() => navigation.navigate('List Harian')}>
           <Text style={styles.textButton}>Laporan Harian</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Form Periode')}>
+          <Text style={styles.textButton}>Edit Periode</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
