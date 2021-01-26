@@ -427,7 +427,7 @@ const FormHarian = (props) => {
                   marginTop: 35,
                 },
               ]}>
-              Berat
+              Body Weight
             </Text>
             <View style={styles.action}>
               <FontAwesome
@@ -712,7 +712,7 @@ const FormHarian = (props) => {
                 marginTop: 35,
               },
             ]}>
-            Berat
+            Body Weight
           </Text>
           <View style={styles.action}>
             <FontAwesome

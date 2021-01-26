@@ -22,7 +22,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {CardHarian} from '../../component';
 
 const ListHarian = ({navigation}) => {
+  this.state = {
+    dataTable: [],
+  };
   const [dataTable, setDataTable] = useState('');
+  const [sisa, setSisa] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -48,13 +52,17 @@ const ListHarian = ({navigation}) => {
           '/harian',
         config,
       );
-      setDataTable(res.data.data);
+      // console.log(res.data.data.harian);
+      setDataTable(Object(res.data.data.harian));
+      setSisa(res.data.data.sisa);
+      console.log(res.data.data.harian);
       await AsyncStorage.setItem(
         'jumlahHarian',
-        JSON.stringify(res.data.data.length + 1),
+        JSON.stringify(res.data.data.harian.length + 1),
       );
       setIsLoading(false);
     } catch (error) {
+      console.log(error);
       alert('gagal');
     }
   };
@@ -69,6 +77,7 @@ const ListHarian = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.textSisa}>Sisa Pakan: {sisa} Sak</Text>
       <FlatList
         style={styles.cardContainer}
         data={dataTable}
@@ -113,6 +122,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  textSisa: {
+    fontSize: 20,
+    marginLeft: 12,
+    marginBottom: 10,
   },
 });
 
