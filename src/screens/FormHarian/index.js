@@ -30,8 +30,8 @@ const FormHarian = (props) => {
   const [umur, setUmur] = useState('');
   const [pakan_masuk, setPakanMasuk] = useState('');
   const [pakan_pakai, setPakanPakai] = useState('');
-  const [jagung_pakai, setJagungPakai] = useState('');
-  const [transfer_pakan, setTransferPakan] = useState('');
+  const [transfer_ke_peternak, setTransferKePeternak] = useState('');
+  const [transfer_dari_peternak, setTransferDariPeternak] = useState('');
   const [mati, setMati] = useState('');
   const [afkir, setAfkir] = useState('');
   const [standart, setStandart] = useState('');
@@ -72,8 +72,10 @@ const FormHarian = (props) => {
       setUmur(JSON.stringify(res.data.data.umur));
       setPakanMasuk(JSON.stringify(res.data.data.pakan_masuk));
       setPakanPakai(JSON.stringify(res.data.data.pakan_pakai));
-      setJagungPakai(JSON.stringify(res.data.data.jagung_pakai));
-      setTransferPakan(JSON.stringify(res.data.data.transfer_pakan));
+      setTransferKePeternak(JSON.stringify(res.data.data.transfer_ke_peternak));
+      setTransferDariPeternak(
+        JSON.stringify(res.data.data.transfer_dari_peternak),
+      );
       setMati(JSON.stringify(res.data.data.mati));
       setAfkir(JSON.stringify(res.data.data.afkir));
       setStandart(JSON.stringify(res.data.data.standart));
@@ -97,8 +99,8 @@ const FormHarian = (props) => {
       umur &&
       pakan_masuk &&
       pakan_pakai &&
-      jagung_pakai &&
-      transfer_pakan &&
+      transfer_ke_peternak &&
+      transfer_dari_peternak &&
       mati &&
       afkir &&
       timbang
@@ -107,8 +109,8 @@ const FormHarian = (props) => {
         umur,
         pakan_masuk,
         pakan_pakai,
-        jagung_pakai,
-        transfer_pakan,
+        transfer_ke_peternak,
+        transfer_dari_peternak,
         mati,
         afkir,
         timbang,
@@ -303,7 +305,7 @@ const FormHarian = (props) => {
                   marginTop: 35,
                 },
               ]}>
-              Jagung Pakai
+              Transfer Pakan Dari Peternak
             </Text>
             <View style={styles.action}>
               <FontAwesome
@@ -312,8 +314,8 @@ const FormHarian = (props) => {
                 size={20}
               />
               <TextInput
-                value={jagung_pakai}
-                placeholder="Masukan jagung yang dipakai"
+                value={transfer_dari_peternak}
+                placeholder="Masukan Jumlah yang ditransfer"
                 placeholderTextColor="#666666"
                 keyboardType="numeric"
                 style={[
@@ -323,7 +325,7 @@ const FormHarian = (props) => {
                   },
                 ]}
                 autoCapitalize="none"
-                onChangeText={(text) => setJagungPakai(text)}
+                onChangeText={(text) => setTransferDariPeternak(text)}
               />
             </View>
             <Text
@@ -334,7 +336,7 @@ const FormHarian = (props) => {
                   marginTop: 35,
                 },
               ]}>
-              Transfer Pakan
+              Transfer Pakan Ke Peternak
             </Text>
             <View style={styles.action}>
               <FontAwesome
@@ -343,7 +345,7 @@ const FormHarian = (props) => {
                 size={20}
               />
               <TextInput
-                value={transfer_pakan}
+                value={transfer_ke_peternak}
                 placeholder="Masukan pakan yang ditransfer"
                 placeholderTextColor="#666666"
                 keyboardType="numeric"
@@ -354,7 +356,7 @@ const FormHarian = (props) => {
                   },
                 ]}
                 autoCapitalize="none"
-                onChangeText={(text) => setTransferPakan(text)}
+                onChangeText={(text) => setTransferKePeternak(text)}
               />
             </View>
             <Text
@@ -588,7 +590,7 @@ const FormHarian = (props) => {
                 marginTop: 35,
               },
             ]}>
-            Jagung Pakai
+            Transfer Pakan Dari Peternak
           </Text>
           <View style={styles.action}>
             <FontAwesome
@@ -597,8 +599,8 @@ const FormHarian = (props) => {
               size={20}
             />
             <TextInput
-              value={jagung_pakai}
-              placeholder="Masukan jagung yang dipakai"
+              value={transfer_dari_peternak}
+              placeholder="Masukan Jumlah yang ditransfer"
               placeholderTextColor="#666666"
               keyboardType="numeric"
               style={[
@@ -608,7 +610,7 @@ const FormHarian = (props) => {
                 },
               ]}
               autoCapitalize="none"
-              onChangeText={(text) => setJagungPakai(text)}
+              onChangeText={(text) => setTransferDariPeternak(text)}
             />
           </View>
           <Text
@@ -619,7 +621,7 @@ const FormHarian = (props) => {
                 marginTop: 35,
               },
             ]}>
-            Transfer Pakan
+            Transfer Pakan Ke Peternak
           </Text>
           <View style={styles.action}>
             <FontAwesome
@@ -628,7 +630,7 @@ const FormHarian = (props) => {
               size={20}
             />
             <TextInput
-              value={transfer_pakan}
+              value={transfer_ke_peternak}
               placeholder="Masukan pakan yang ditransfer"
               placeholderTextColor="#666666"
               keyboardType="numeric"
@@ -639,7 +641,7 @@ const FormHarian = (props) => {
                 },
               ]}
               autoCapitalize="none"
-              onChangeText={(text) => setTransferPakan(text)}
+              onChangeText={(text) => setTransferKePeternak(text)}
             />
           </View>
           <Text
