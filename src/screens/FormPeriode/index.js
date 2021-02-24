@@ -59,7 +59,7 @@ const FormPeriode = (props) => {
         config,
       );
       setDoc(JSON.stringify(res.data.data.total_doc));
-      setNoDo(JSON.stringify(res.data.data.no_do));
+      setNoDo(res.data.data.no_do);
       setIsLoading(false);
     } catch (error) {
       alert('gagal');

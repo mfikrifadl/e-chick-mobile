@@ -79,7 +79,8 @@ const FormHarian = (props) => {
       setMati(JSON.stringify(res.data.data.mati));
       setAfkir(JSON.stringify(res.data.data.afkir));
       setStandart(JSON.stringify(res.data.data.standart));
-      setTimbang(JSON.stringify(res.data.data.timbang));
+      setTimbang(res.data.data.timbang);
+      console.log(res.data.timbang);
       setIsLoading(false);
     } catch (error) {
       alert('gagal');
@@ -125,7 +126,6 @@ const FormHarian = (props) => {
             body,
             config,
           );
-          console.log(res.data);
         } else {
           const res = await Axios.post(
             'https://e-chick-backend.herokuapp.com/api/periode/' +

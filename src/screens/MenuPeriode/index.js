@@ -6,19 +6,55 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
+  TouchableOpacity, ActivityIndicator
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Axios from 'axios';
 
-const MenuPeriode = ({navigation}) => {
+const MenuPeriode = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClickSubmit = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const idPeriode = await AsyncStorage.getItem('idPeriode');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    try {
+      setIsLoading(true);
+      const res = await Axios.get(
+        'https://e-chick-backend.herokuapp.com/api/periode/export/' +
+        idPeriode,
+        config,
+      );
+      console.log(res);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  if (isLoading === true) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#009387" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonMenu}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleClickSubmit}>
+          <Text style={styles.textButton}>Export Laporan</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('List Harian')}>
