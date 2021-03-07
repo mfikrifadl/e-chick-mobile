@@ -1,7 +1,7 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   Login,
   Home,
@@ -12,6 +12,8 @@ import {
   MenuPeriode,
   ListHarian,
   FormHarian,
+  ListPanen,
+  FormPanen
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -33,23 +35,25 @@ const AppNavigation = () => {
       <Stack.Navigator>
         <Stack.Screen
           name={'Splash'}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           component={Splash}
         />
         <Stack.Screen
           name={'Login'}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           component={Login}
         />
         <Stack.Screen
           name={'MainApp'}
           component={MainApp}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen name={'Form Periode'} component={FormPeriode} />
         <Stack.Screen name={'Menu Periode'} component={MenuPeriode} />
         <Stack.Screen name={'List Harian'} component={ListHarian} />
         <Stack.Screen name={'Form Harian'} component={FormHarian} />
+        <Stack.Screen name={'Form Panen'} component={FormPanen} />
+        <Stack.Screen name={'List Panen'} component={ListPanen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

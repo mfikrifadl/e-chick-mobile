@@ -65,6 +65,11 @@ const MenuPeriode = ({ navigation }) => {
           onPress={() => navigation.navigate('Form Periode')}>
           <Text style={styles.textButton}>Edit Periode</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('List Panen')}>
+          <Text style={styles.textButton}>Panen</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
