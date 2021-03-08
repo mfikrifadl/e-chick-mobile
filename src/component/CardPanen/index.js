@@ -7,7 +7,7 @@ const CardPanen = ({ item }) => {
   const navigation = useNavigation();
   const handleClickSubmit = async () => {
     await AsyncStorage.setItem('idPanen', JSON.stringify(item.id));
-    navigation.navigate('Form Panen', { id: item.id });
+    navigation.navigate('Form Edit Panen', { id: item.id });
   };
   return (
     <View style={styles.cardContainer}>

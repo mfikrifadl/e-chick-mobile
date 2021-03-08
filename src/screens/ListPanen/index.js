@@ -46,7 +46,7 @@ const ListPanen = ({ navigation }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      await AsyncStorage.setItem('idHarian', '');
+      await AsyncStorage.setItem('idPanen', '');
       setIsLoading(true);
       getData();
       setIsLoading(false);

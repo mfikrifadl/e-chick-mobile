@@ -13,7 +13,8 @@ import {
   ListHarian,
   FormHarian,
   ListPanen,
-  FormPanen
+  FormPanen,
+  FormEditPanen
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -53,6 +54,7 @@ const AppNavigation = () => {
         <Stack.Screen name={'List Harian'} component={ListHarian} />
         <Stack.Screen name={'Form Harian'} component={FormHarian} />
         <Stack.Screen name={'Form Panen'} component={FormPanen} />
+        <Stack.Screen name={'Form Edit Panen'} component={FormEditPanen} />
         <Stack.Screen name={'List Panen'} component={ListPanen} />
       </Stack.Navigator>
     </NavigationContainer>

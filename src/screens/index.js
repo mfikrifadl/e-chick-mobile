@@ -8,6 +8,7 @@ import MenuPeriode from './MenuPeriode';
 import ListHarian from './ListHarian';
 import FormHarian from './FormHarian';
 import FormPanen from './FormPanen';
+import FormEditPanen from './FormEditPanen';
 import ListPanen from './ListPanen';
 
 export {
@@ -21,5 +22,6 @@ export {
   ListHarian,
   FormHarian,
   FormPanen,
+  FormEditPanen,
   ListPanen
 };
