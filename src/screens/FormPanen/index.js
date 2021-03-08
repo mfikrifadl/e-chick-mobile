@@ -38,7 +38,6 @@ const FormPanen = (props) => {
   const [detail_panen, setDetailPanen] = useState([{ ekor: "", brutto: "" }]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
 
   const { colors } = useTheme();
 

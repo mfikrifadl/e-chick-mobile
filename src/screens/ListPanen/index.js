@@ -21,7 +21,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { CardHarian } from '../../component';
+import { CardPanen } from '../../component';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -63,19 +63,13 @@ const ListPanen = ({ navigation }) => {
     };
     try {
       const res = await Axios.get(
-        'https://e-chick-backend.herokuapp.com/api/periode/' +
-        idPeriode +
-        '/harian',
+        'https://e-chick-backend.herokuapp.com/api/panen/' +
+        idPeriode,
         config,
       );
       // console.log(res.data.data.harian);
-      setDataTable(Object(res.data.data.harian));
-      setSisa(res.data.data.sisa);
-      console.log(res.data.data.harian);
-      await AsyncStorage.setItem(
-        'jumlahHarian',
-        JSON.stringify(res.data.data.harian.length + 1),
-      );
+      setDataTable(Object(res.data.data));
+      console.log(res.data.data);
     } catch (error) {
       console.log(error);
       alert('gagal');
@@ -99,12 +93,11 @@ const ListPanen = ({ navigation }) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Text style={styles.textSisa}>Sisa Pakan: {sisa} Sak</Text>
         <FlatList
           style={styles.cardContainer}
           data={dataTable}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => <CardHarian item={item} {...this.props} />}
+          renderItem={({ item }) => <CardPanen item={item} {...this.props} />}
         />
         <View style={styles.buttonButtom}>
           <TouchableOpacity

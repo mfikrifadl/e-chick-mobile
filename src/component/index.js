@@ -1,3 +1,4 @@
 import CardPeriode from './CardPeriode';
 import CardHarian from './CardHarian';
-export {CardPeriode, CardHarian};
+import CardPanen from './CardPanen';
+export { CardPeriode, CardHarian, CardPanen };
