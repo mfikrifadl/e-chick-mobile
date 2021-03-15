@@ -5,19 +5,79 @@
  * @format
  * @flow strict-local
  */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import React from 'react';
+import Axios from 'axios';
+import React, { useState, useEffect, useCallback } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { SafeAreaView, StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text, Button, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 
 const Home = (props) => {
+  const [sisa_ayam, setSisaAyam] = useState('');
+  const [afkir, setAfkir] = useState('');
+  const [mati, setMati] = useState('');
+  const [pakan_masuk, setPakanMasuk] = useState('');
+  const [pakan_keluar, setPakanKeluar] = useState('');
+  const [sisa_pakan, setSisaPakan] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getData();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', async () => {
+      setIsLoading(true);
+      getData();
+      setIsLoading(false);
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [props.navigation]);
+
+  const getData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    try {
+      const res = await Axios.get(
+        'https://e-chick-backend.herokuapp.com/api/home',
+        config,
+      );
+      console.log(res.data.data);
+      setSisaAyam(res.data.data.sisa_ayam);
+      setMati(res.data.data.mati);
+      setAfkir(res.data.data.afkir);
+      setPakanKeluar(res.data.data.pakan_keluar);
+      setPakanMasuk(res.data.data.pakan_masuk);
+      setSisaPakan(res.data.data.sisa_pakan);
+    } catch (error) {
+      console.log(error);
+      alert('gagal');
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading === true) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#009387" />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
+      <View style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View style={styles.header}>
           <View style={styles.rowHeader}>
             <TouchableOpacity style={[styles.buttonHeader, { backgroundColor: '#fd6768' }]} onPress={() => props.navigation.navigate('List Periode')}>
@@ -54,19 +114,19 @@ const Home = (props) => {
             <View style={styles.containerContentFooter}>
               <View style={styles.boxFooter}>
                 <View style={styles.circleContent}>
-                  <Text style={styles.circleText}>1</Text>
+                  <Text style={styles.circleText}>{sisa_ayam}</Text>
                 </View>
                 <Text style={{ marginTop: 10 }}>Sisa Ayam</Text>
               </View>
               <View style={styles.boxFooter}>
                 <View style={styles.circleContent}>
-                  <Text style={styles.circleText}>1</Text>
+                  <Text style={styles.circleText}>{afkir}</Text>
                 </View>
                 <Text style={{ marginTop: 10 }}>Ayam Afkir</Text>
               </View>
               <View style={[styles.boxFooter, { borderRightWidth: 0 }]}>
                 <View style={styles.circleContent}>
-                  <Text style={styles.circleText}>1</Text>
+                  <Text style={styles.circleText}>{mati}</Text>
                 </View>
                 <Text style={{ marginTop: 10 }}>Ayam Mati</Text>
               </View>
@@ -76,19 +136,19 @@ const Home = (props) => {
             <View style={styles.containerContentFooter2}>
               <View style={styles.boxFooter2}>
                 <View style={styles.circleContent}>
-                  <Text style={styles.circleText}>1</Text>
+                  <Text style={styles.circleText}>{pakan_masuk}</Text>
                 </View>
                 <Text style={{ marginTop: 10 }}>Pakan Masuk</Text>
               </View>
               <View style={styles.boxFooter2}>
                 <View style={styles.circleContent}>
-                  <Text style={styles.circleText}>1</Text>
+                  <Text style={styles.circleText}>{pakan_keluar}</Text>
                 </View>
                 <Text style={{ marginTop: 10 }}>Pakan Keluar</Text>
               </View>
               <View style={[styles.boxFooter2, { borderRightWidth: 0 }]}>
                 <View style={styles.circleContent}>
-                  <Text style={styles.circleText}>1</Text>
+                  <Text style={styles.circleText}>{sisa_pakan}</Text>
                 </View>
                 <Text style={{ marginTop: 10 }}>Sisa Pakan</Text>
               </View>
