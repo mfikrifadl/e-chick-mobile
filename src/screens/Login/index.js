@@ -7,7 +7,7 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -24,7 +24,7 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ const Login = (props) => {
   const [islogin, setIslogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const handleClickSubmit = async () => {
     setIslogin('');
@@ -48,10 +48,14 @@ const Login = (props) => {
           body,
         );
         await AsyncStorage.setItem('token', res.data.access_token);
+        await AsyncStorage.setItem('nama_user', res.data.data.name);
+        await AsyncStorage.setItem('role', JSON.stringify(res.data.data.role_id));
+        await AsyncStorage.setItem('email', res.data.data.email);
         setIsLoading(false);
         setIslogin('success');
       } catch (error) {
         setIsLoading(false);
+        console.log(error);
         setIslogin('error');
       }
       const token = await AsyncStorage.getItem('token');
@@ -140,7 +144,7 @@ const Login = (props) => {
         </View>
 
         <TouchableOpacity>
-          <Text style={{color: '#009387', marginTop: 15}}>
+          <Text style={{ color: '#009387', marginTop: 15 }}>
             Forgot password?
           </Text>
         </TouchableOpacity>

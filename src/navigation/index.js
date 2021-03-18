@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,16 +14,30 @@ import {
   FormHarian,
   ListPanen,
   FormPanen,
-  FormEditPanen
+  FormEditPanen,
+  FormTambahPegawai
 } from '../screens';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const MainApp = () => {
+const MainApp = (props) => {
+  const [role, setRole] = useState('');
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', async () => {
+      setRole(await AsyncStorage.getItem('role'));
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [props.navigation]);
+
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
+      {role == 1 &&
+        <Tab.Screen name="Home" component={Home} />
+      }
       <Tab.Screen name="List Periode" component={ListPeriode} />
       <Tab.Screen name="Akun" component={Akun} />
     </Tab.Navigator>
@@ -56,6 +70,7 @@ const AppNavigation = () => {
         <Stack.Screen name={'Form Panen'} component={FormPanen} />
         <Stack.Screen name={'Form Edit Panen'} component={FormEditPanen} />
         <Stack.Screen name={'List Panen'} component={ListPanen} />
+        <Stack.Screen name={'Form Tambah Pegawai'} component={FormTambahPegawai} />
       </Stack.Navigator>
     </NavigationContainer>
   );

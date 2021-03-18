@@ -10,6 +10,7 @@ import FormHarian from './FormHarian';
 import FormPanen from './FormPanen';
 import FormEditPanen from './FormEditPanen';
 import ListPanen from './ListPanen';
+import FormTambahPegawai from './FormTambahPegawai';
 
 export {
   Login,
@@ -23,5 +24,6 @@ export {
   FormHarian,
   FormPanen,
   FormEditPanen,
-  ListPanen
+  ListPanen,
+  FormTambahPegawai
 };
