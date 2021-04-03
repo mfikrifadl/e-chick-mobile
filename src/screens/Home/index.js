@@ -86,7 +86,7 @@ const Home = (props) => {
                 <MaterialCommunityIcons name="typewriter" style={{ color: '#fd6768' }} size={wp('8%')} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.buttonHeader, { backgroundColor: '#109da4' }]}>
+            <TouchableOpacity style={[styles.buttonHeader, { backgroundColor: '#109da4' }]} onPress={() => props.navigation.navigate('Overview')}>
               <Text style={styles.textHeader}>Overview (Grafik)</Text>
               <View style={styles.icon}>
                 <MaterialCommunityIcons name="chart-bar" style={{ color: '#109da4' }} size={wp('8%')} />

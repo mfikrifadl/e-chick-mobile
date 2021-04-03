@@ -11,6 +11,7 @@ import FormPanen from './FormPanen';
 import FormEditPanen from './FormEditPanen';
 import ListPanen from './ListPanen';
 import FormTambahPegawai from './FormTambahPegawai';
+import Overview from './Overview';
 
 export {
   Login,
@@ -25,5 +26,6 @@ export {
   FormPanen,
   FormEditPanen,
   ListPanen,
-  FormTambahPegawai
+  FormTambahPegawai,
+  Overview
 };
