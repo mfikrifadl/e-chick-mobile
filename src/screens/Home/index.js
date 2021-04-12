@@ -100,8 +100,8 @@ const Home = (props) => {
                 <MaterialCommunityIcons name="face-recognition" style={{ color: '#f0981a' }} size={wp('8%')} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.buttonHeader, { backgroundColor: '#48294b' }]}>
-              <Text style={styles.textHeader}>Funfact</Text>
+            <TouchableOpacity style={[styles.buttonHeader, { backgroundColor: '#48294b' }]} onPress={() => props.navigation.navigate('News')}>
+              <Text style={styles.textHeader}>News</Text>
               <View style={styles.icon}>
                 <MaterialCommunityIcons name="newspaper" style={{ color: '#48294b' }} size={wp('8%')} />
               </View>

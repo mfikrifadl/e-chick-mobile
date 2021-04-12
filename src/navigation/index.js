@@ -21,7 +21,8 @@ import {
   FormPanen,
   FormEditPanen,
   FormTambahPegawai,
-  Overview
+  Overview,
+  News
 } from '../screens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -93,6 +94,7 @@ const AppNavigation = () => {
         <Stack.Screen name={'List Panen'} component={ListPanen} />
         <Stack.Screen name={'Form Tambah Pegawai'} component={FormTambahPegawai} />
         <Stack.Screen name={'Overview'} component={Overview} />
+        <Stack.Screen name={'News'} component={News} />
       </Stack.Navigator>
     </NavigationContainer>
   );
