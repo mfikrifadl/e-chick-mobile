@@ -8,7 +8,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Axios from 'axios';
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -21,7 +21,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {CardHarian} from '../../component';
+import { CardHarian } from '../../component';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -29,7 +29,7 @@ const wait = (timeout) => {
   });
 };
 
-const ListHarian = ({navigation}) => {
+const ListHarian = ({ navigation }) => {
   this.state = {
     dataTable: [],
   };
@@ -59,13 +59,13 @@ const ListHarian = ({navigation}) => {
     const token = await AsyncStorage.getItem('token');
     const idPeriode = await AsyncStorage.getItem('idPeriode');
     const config = {
-      headers: {Authorization: `Bearer ${token}`},
+      headers: { Authorization: `Bearer ${token}` },
     };
     try {
       const res = await Axios.get(
         'https://e-chick-backend.herokuapp.com/api/periode/' +
-          idPeriode +
-          '/harian',
+        idPeriode +
+        '/harian',
         config,
       );
       // console.log(res.data.data.harian);
@@ -104,7 +104,7 @@ const ListHarian = ({navigation}) => {
           style={styles.cardContainer}
           data={dataTable}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => <CardHarian item={item} {...this.props} />}
+          renderItem={({ item }) => <CardHarian item={item} {...this.props} />}
         />
         <View style={styles.buttonButtom}>
           <TouchableOpacity

@@ -51,7 +51,6 @@ const Home = (props) => {
         'https://e-chick-backend.herokuapp.com/api/home',
         config,
       );
-      console.log(res.data.data);
       setSisaAyam(res.data.data.sisa_ayam);
       setMati(res.data.data.mati);
       setAfkir(res.data.data.afkir);

@@ -12,10 +12,11 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity, ActivityIndicator
+  TouchableOpacity, ActivityIndicator, ToastAndroid
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Axios from 'axios';
+import downloadManager from 'react-native-simple-download-manager';
 
 const MenuPeriode = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,17 +29,50 @@ const MenuPeriode = ({ navigation }) => {
     };
     try {
       setIsLoading(true);
-      const res = await Axios.get(
-        'https://e-chick-backend.herokuapp.com/api/periode/export/' +
+      const res = await Axios.get('https://e-chick-backend.herokuapp.com/api/periode/export/' +
         idPeriode,
-        config,
-      );
+        config
+      ).then(() => doDownloadFile('https://e-chick-backend.herokuapp.com/api/periode/export/' +
+        idPeriode
+      ));
       console.log(res);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const doDownloadFile = async (url) => {
+    console.log(url);
+    if (url) {
+      const token = await AsyncStorage.getItem('token');
+      const header = { Authorization: `Bearer ${token}` }
+      const file_name = 'Laporan Periode.xlsx'
+      const config = {
+        downloadTitle: 'Download ' + file_name,
+        downloadDescription:
+          "Description that should appear in Native Download manager",
+        saveAsName: file_name,
+        allowedInRoaming: true,
+        allowedInMetered: true,
+        showInDownloads: true,
+        external: false, //when false basically means use the default Download path (version ^1.3)
+      }
+
+      ToastAndroid.show('Downloading ...', ToastAndroid.LONG)
+      downloadManager
+        .download(url, header, config)
+        .then(response => {
+          ToastAndroid.show('Download Success', ToastAndroid.SHORT)
+        })
+        .catch(err => {
+          ToastAndroid.show('Download Failed', ToastAndroid.SHORT)
+        })
+    } else {
+      ToastAndroid.show('File download not found', ToastAndroid.SHORT)
+    }
+  }
+
   if (isLoading === true) {
     return (
       <View style={styles.loader}>
