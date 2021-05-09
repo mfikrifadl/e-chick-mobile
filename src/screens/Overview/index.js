@@ -29,7 +29,7 @@ import {
 
 const Overview = (props) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [dataAyam, setDataAyam] = useState({ "afkir": 0, "mati": 0, "panen": 0, "sisa": 0 });
+    const [dataAyam, setDataAyam] = useState({});
     const [totalPanen, setTotalPanen] = useState({});
     const [totalPakan, setTotalPakan] = useState({});
     useEffect(() => {
@@ -78,33 +78,32 @@ const Overview = (props) => {
         }
     };
 
-    // console.log(totalPanen)
-
+    console.log(totalPanen.labels)
     const data = [
         {
             name: "Sisa",
-            population: dataAyam.sisa,
+            population: 0,
             color: "rgba(131, 167, 234, 1)",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "Panen",
-            population: dataAyam.panen,
+            population: 2,
             color: "blue",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "Afkir",
-            population: dataAyam.afkir,
+            population: 3,
             color: "red",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "Mati",
-            population: dataAyam.mati,
+            population: 5,
             color: "#ffffff",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
@@ -131,8 +130,8 @@ const Overview = (props) => {
 
     return (
         <View style={{ padding: 10 }}>
-            {Object.keys(totalPanen).length !== 0 &&
-                <View style={styles.cardChart}>
+            {Object.keys(totalPanen).length > 0 && Object.keys(totalPanen.labels).length > 0 &&
+                < View style={styles.cardChart}>
                     <Text>Total Panen</Text>
                     <LineChart
                         data={totalPanen}
@@ -165,20 +164,24 @@ const Overview = (props) => {
                     />
                 </View>
             }
-            <View style={styles.cardChart}>
-                <Text>Data Ayam</Text>
-                <PieChart
-                    data={data}
-                    width={Dimensions.get("window").width}
-                    height={200}
-                    chartConfig={chartConfig}
-                    accessor={"population"}
-                    backgroundColor={"transparent"}
-                // paddingLeft={"15"}
-                // absolute
-                />
-            </View>
-            {Object.keys(totalPakan).length !== 0 &&
+            {
+                Object.keys(dataAyam).length > 0 &&
+                <View style={styles.cardChart}>
+                    <Text>Data Ayam</Text>
+                    <PieChart
+                        data={data}
+                        width={Dimensions.get("window").width}
+                        height={200}
+                        chartConfig={chartConfig}
+                        accessor={"population"}
+                        backgroundColor={"transparent"}
+                    // paddingLeft={"15"}
+                    // absolute
+                    />
+                </View>
+            }
+            {
+                Object.keys(totalPakan).length > 0 &&
                 <View style={styles.cardChart}>
                     <Text>Grafik Pakan</Text>
                     <LineChart
@@ -212,7 +215,7 @@ const Overview = (props) => {
                     />
                 </View>
             }
-        </View>
+        </View >
     )
 }
 
