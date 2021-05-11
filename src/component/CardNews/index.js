@@ -21,7 +21,9 @@ const CardNews = ({ item }) => {
                 }} />
                 <View style={{ flexDirection: 'column' }}>
                     <Text style={{ fontWeight: 'bold', maxWidth: wp('40%') }}>{item.title}</Text>
-                    <Text style={{ marginTop: 10, maxWidth: wp('40%') }}>{item.description.substr(0, 100)}...</Text>
+                    {item.description != null &&
+                        <Text style={{ marginTop: 10, maxWidth: wp('40%') }}>{item.description.substr(0, 100)}...</Text>
+                    }
                     <Text style={{
                         position: 'absolute',
                         bottom: 0

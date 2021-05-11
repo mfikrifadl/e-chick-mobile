@@ -57,6 +57,7 @@ const Overview = (props) => {
             const arrayDataPanen = Object.values(resDataPanen)
             const labelsPanen = arrayDataPanen.map(x => x.nama_bulan)
             const dataPanen = arrayDataPanen.map(x => x.ekor)
+            alert(dataPanen)
             const formatDataPanen = {
                 labels: labelsPanen,
                 datasets: [{ data: dataPanen }]
@@ -78,7 +79,7 @@ const Overview = (props) => {
         }
     };
 
-    console.log(totalPanen.labels)
+
     const data = [
         {
             name: "Sisa",

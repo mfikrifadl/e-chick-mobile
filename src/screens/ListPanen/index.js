@@ -67,9 +67,7 @@ const ListPanen = ({ navigation }) => {
         idPeriode,
         config,
       );
-      // console.log(res.data.data.harian);
       setDataTable(Object(res.data.data));
-      console.log(res.data.data);
     } catch (error) {
       console.log(error);
       alert('gagal');

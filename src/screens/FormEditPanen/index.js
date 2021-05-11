@@ -71,7 +71,6 @@ const FormEditPanen = (props) => {
       res.data.data.detail_panen.map((x, i) => {
         detail_panen[i] = { ekor: JSON.stringify(x.ekor), brutto: JSON.stringify(x.brutto) }
       });
-      console.log(detail_panen)
       setIsLoading(false);
     } catch (error) {
       console.log(error);

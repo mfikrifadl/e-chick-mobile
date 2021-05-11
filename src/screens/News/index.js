@@ -7,7 +7,7 @@ import Axios from 'axios';
 const News = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(false);
-    const [dataTable, setDataTable] = useState('');
+    const [dataTable, setDataTable] = useState({});
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', async () => {
             getData();
@@ -45,12 +45,14 @@ const News = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                style={styles.cardContainer}
-                data={dataTable}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => <CardNews item={item} />}
-            />
+            {Object.keys(dataTable).length > 0 &&
+                <FlatList
+                    style={styles.cardContainer}
+                    data={dataTable}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => <CardNews item={item} />}
+                />
+            }
         </View>
     )
 }

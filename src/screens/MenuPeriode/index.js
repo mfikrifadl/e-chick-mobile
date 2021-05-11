@@ -35,7 +35,6 @@ const MenuPeriode = ({ navigation }) => {
       ).then(() => doDownloadFile('https://e-chick-backend.herokuapp.com/api/periode/export/' +
         idPeriode
       ));
-      console.log(res);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -43,7 +42,6 @@ const MenuPeriode = ({ navigation }) => {
   };
 
   const doDownloadFile = async (url) => {
-    console.log(url);
     if (url) {
       const token = await AsyncStorage.getItem('token');
       const header = { Authorization: `Bearer ${token}` }

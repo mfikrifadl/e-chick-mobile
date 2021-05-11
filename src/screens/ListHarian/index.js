@@ -68,10 +68,8 @@ const ListHarian = ({ navigation }) => {
         '/harian',
         config,
       );
-      // console.log(res.data.data.harian);
       setDataTable(Object(res.data.data.harian));
       setSisa(res.data.data.sisa);
-      console.log(res.data.data.harian);
       await AsyncStorage.setItem(
         'jumlahHarian',
         JSON.stringify(res.data.data.harian.length + 1),

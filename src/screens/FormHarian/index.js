@@ -7,7 +7,7 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState, useEffect, Component} from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import {
   View,
   Text,
@@ -24,7 +24,7 @@ import Axios from 'axios';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 
 const FormHarian = (props) => {
   const [umur, setUmur] = useState('');
@@ -40,7 +40,7 @@ const FormHarian = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', async () => {
@@ -60,13 +60,13 @@ const FormHarian = (props) => {
   const getData = async () => {
     const token = await AsyncStorage.getItem('token');
     const config = {
-      headers: {Authorization: `Bearer ${token}`},
+      headers: { Authorization: `Bearer ${token}` },
     };
     try {
       setIsLoading(true);
       const res = await Axios.get(
         'https://e-chick-backend.herokuapp.com/api/harian/' +
-          props.route.params.id,
+        props.route.params.id,
         config,
       );
       setUmur(JSON.stringify(res.data.data.umur));
@@ -80,7 +80,6 @@ const FormHarian = (props) => {
       setAfkir(JSON.stringify(res.data.data.afkir));
       setStandart(JSON.stringify(res.data.data.standart));
       setTimbang(res.data.data.timbang);
-      console.log(res.data.timbang);
       setIsLoading(false);
     } catch (error) {
       alert('gagal');
@@ -94,7 +93,7 @@ const FormHarian = (props) => {
     const idPeriode = await AsyncStorage.getItem('idPeriode');
     const idHarian = await AsyncStorage.getItem('idHarian');
     const config = {
-      headers: {Authorization: `Bearer ${token}`},
+      headers: { Authorization: `Bearer ${token}` },
     };
     if (
       umur &&
@@ -121,16 +120,16 @@ const FormHarian = (props) => {
         if (isEdit == true) {
           const res = await Axios.put(
             'https://e-chick-backend.herokuapp.com/api/harian/' +
-              idHarian +
-              '/edit',
+            idHarian +
+            '/edit',
             body,
             config,
           );
         } else {
           const res = await Axios.post(
             'https://e-chick-backend.herokuapp.com/api/periode/' +
-              idPeriode +
-              '/harian',
+            idPeriode +
+            '/harian',
             body,
             config,
           );

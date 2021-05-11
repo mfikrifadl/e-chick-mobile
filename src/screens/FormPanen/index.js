@@ -84,7 +84,6 @@ const FormPanen = (props) => {
           body,
           config,
         );
-        console.log(res);
         setIsLoading(false);
         setIsSuccess('success');
       } catch (error) {
