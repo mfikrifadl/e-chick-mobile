@@ -57,7 +57,6 @@ const Overview = (props) => {
             const arrayDataPanen = Object.values(resDataPanen)
             const labelsPanen = arrayDataPanen.map(x => x.nama_bulan)
             const dataPanen = arrayDataPanen.map(x => x.ekor)
-            alert(dataPanen)
             const formatDataPanen = {
                 labels: labelsPanen,
                 datasets: [{ data: dataPanen }]
@@ -83,28 +82,28 @@ const Overview = (props) => {
     const data = [
         {
             name: "Sisa",
-            population: 0,
+            population: dataAyam.sisa,
             color: "rgba(131, 167, 234, 1)",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "Panen",
-            population: 2,
+            population: dataAyam.panen,
             color: "blue",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "Afkir",
-            population: 3,
+            population: dataAyam.afkir,
             color: "red",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "Mati",
-            population: 5,
+            population: dataAyam.mati,
             color: "#ffffff",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
