@@ -20,6 +20,18 @@ import downloadManager from 'react-native-simple-download-manager';
 
 const MenuPeriode = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState('');
+  const [isClose, setIsClose] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      setRole(await AsyncStorage.getItem('role'));
+      setEndDate(await AsyncStorage.getItem('end_date'));
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   const handleClickSubmit = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -40,6 +52,33 @@ const MenuPeriode = ({ navigation }) => {
       console.log(error);
     }
   };
+
+  const handleClickClose = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const idPeriode = await AsyncStorage.getItem('idPeriode');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    console.log('ok')
+    const body = {};
+    try {
+      setIsLoading(true);
+      const res = await Axios.put(
+        'https://e-chick-backend.herokuapp.com/api/periode/close/' + idPeriode, body,
+        config
+      );
+      setIsLoading(false);
+      setIsClose('success');
+    } catch (error) {
+      console.log(error);
+      setIsClose('error');
+    }
+  };
+
+  useEffect(() => {
+    isClose == 'success' && navigation.navigate('List Periode');
+    isClose == 'error' && alert('Error');
+  }, [isClose]);
 
   const doDownloadFile = async (url) => {
     if (url) {
@@ -82,11 +121,13 @@ const MenuPeriode = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonMenu}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleClickSubmit}>
-          <Text style={styles.textButton}>Export Laporan</Text>
-        </TouchableOpacity>
+        {role == 1 &&
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleClickSubmit}>
+            <Text style={styles.textButton}>Export Laporan</Text>
+          </TouchableOpacity>
+        }
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('List Harian')}>
@@ -102,6 +143,13 @@ const MenuPeriode = ({ navigation }) => {
           onPress={() => navigation.navigate('List Panen')}>
           <Text style={styles.textButton}>Panen</Text>
         </TouchableOpacity>
+        {endDate == 'null' &&
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleClickClose}>
+            <Text style={styles.textButton}>Tutup Periode</Text>
+          </TouchableOpacity>
+        }
       </View>
     </SafeAreaView>
   );
