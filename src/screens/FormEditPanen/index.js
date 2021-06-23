@@ -69,7 +69,7 @@ const FormEditPanen = (props) => {
       setKeranjang(JSON.stringify(res.data.data.keranjang))
       setAlamatPenerima(res.data.data.alamat_penerima)
       res.data.data.detail_panen.map((x, i) => {
-        detail_panen[i] = { ekor: JSON.stringify(x.ekor), brutto: JSON.stringify(x.brutto) }
+        detail_panen[i] = { ekor: JSON.stringify(x.ekor), brutto: x.brutto }
       });
       setIsLoading(false);
     } catch (error) {
@@ -162,7 +162,7 @@ const FormEditPanen = (props) => {
                   },
                 ]}>
                 Tanggal
-            </Text>
+              </Text>
               <View style={styles.action}>
                 <DatePicker
                   placeholder="Tanggal"
@@ -202,7 +202,7 @@ const FormEditPanen = (props) => {
                     },
                   ]}>
                   Keranjang
-            </Text>
+                </Text>
                 <View style={styles.action}>
                   <TextInput
                     placeholder="Keranjang"
@@ -231,7 +231,7 @@ const FormEditPanen = (props) => {
                   },
                 ]}>
                 Penerima
-            </Text>
+              </Text>
               <View style={styles.action}>
                 <TextInput
                   placeholder="Penerima"
@@ -258,7 +258,7 @@ const FormEditPanen = (props) => {
                     },
                   ]}>
                   Alamat Penerima
-            </Text>
+                </Text>
                 <View style={styles.action}>
                   <TextInput
                     placeholder="Alamat Penerima"
@@ -307,7 +307,7 @@ const FormEditPanen = (props) => {
                     style={styles.input}
                     placeholderTextColor="#666666"
                     autoCapitalize="none"
-                    onChangeText={(text) => handleInputChange(text, i, 'brutto')}
+                    onChangeText={(text) => handleInputChange(parseFloat(text), i, 'brutto')}
                   />
                   <View style={styles.buttonBox}>
                     {detail_panen.length !== 1 && <TouchableOpacity
@@ -332,7 +332,7 @@ const FormEditPanen = (props) => {
                     },
                   ]}>
                   Simpan
-              </Text>
+                </Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
