@@ -131,7 +131,7 @@ const FormPanen = (props) => {
                   },
                 ]}>
                 Tanggal
-            </Text>
+              </Text>
               <View style={styles.action}>
                 <DatePicker
                   placeholder="Tanggal"
@@ -170,13 +170,14 @@ const FormPanen = (props) => {
                       color: colors.text,
                     },
                   ]}>
-                  Keranjang
-            </Text>
+                  Keranjang (Kg)
+                </Text>
                 <View style={styles.action}>
                   <TextInput
                     placeholder="Keranjang"
                     value={keranjang}
                     placeholderTextColor="#666666"
+                    keyboardType="numeric"
                     style={[
                       styles.textInput,
                       {
@@ -200,7 +201,7 @@ const FormPanen = (props) => {
                   },
                 ]}>
                 Penerima
-            </Text>
+              </Text>
               <View style={styles.action}>
                 <TextInput
                   placeholder="Penerima"
@@ -227,7 +228,7 @@ const FormPanen = (props) => {
                     },
                   ]}>
                   Alamat Penerima
-            </Text>
+                </Text>
                 <View style={styles.action}>
                   <TextInput
                     placeholder="Alamat Penerima"
@@ -263,6 +264,7 @@ const FormPanen = (props) => {
                   <TextInput
                     placeholder="Input Ekor"
                     name="ekor"
+                    keyboardType="numeric"
                     value={x.ekor}
                     placeholderTextColor="#666666"
                     style={styles.input}
@@ -270,9 +272,10 @@ const FormPanen = (props) => {
                     onChangeText={(text) => handleInputChange(text, i, 'ekor')}
                   />
                   <TextInput
-                    placeholder="Input Brutto"
+                    placeholder="Input Brutto (Kg)"
                     name="brutto"
                     value={x.brutto}
+                    keyboardType="numeric"
                     style={styles.input}
                     placeholderTextColor="#666666"
                     autoCapitalize="none"
@@ -301,7 +304,7 @@ const FormPanen = (props) => {
                     },
                   ]}>
                   Simpan
-              </Text>
+                </Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>

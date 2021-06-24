@@ -29,13 +29,13 @@ const CardPanen = ({ item }) => {
                   Total Ekor : {item.total_ekor}
                 </Text>
                 <Text style={{ color: '#fff' }}>
-                  Berat Bersh : {item.total_bersih} gram
+                  Berat Bersh : {item.total_bersih} Kg
                 </Text>
               </View>
             </View>
           </View>
           <Text style={{ alignSelf: 'flex-end', color: '#fff' }}>
-            Rata rata : {item.rata_rata} gram
+            Rata rata : {item.rata_rata} Kg
           </Text>
         </View>
       </TouchableOpacity>
